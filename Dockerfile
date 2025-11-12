@@ -1,7 +1,7 @@
 FROM alpine:3.22 as base
 
-ENV REFRESHED_AT="2025-08-23" \
-    POWERDNS_VERSION="5.0.0" \
+ENV REFRESHED_AT="2025-11-12" \
+    POWERDNS_VERSION="5.0.1" \
     BUILD_DEPS="g++ make mariadb-dev postgresql-dev sqlite-dev curl boost-dev mariadb-connector-c-dev" \
     RUN_DEPS="bash libpq sqlite-libs libstdc++ libgcc mariadb-client postgresql-client sqlite mariadb-connector-c lua-dev curl-dev boost-program_options" \
     POWERDNS_MODULES="bind gmysql gpgsql gsqlite3"
