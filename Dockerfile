@@ -2,8 +2,8 @@ FROM alpine:3.24 as base
 
 ENV REFRESHED_AT="2026-10-17" \
     POWERDNS_VERSION="5.1.4" \
-    BUILD_DEPS="g++ make mariadb-dev postgresql-dev sqlite-dev curl boost-dev mariadb-connector-c-dev" \
-    RUN_DEPS="bash libpq sqlite-libs libstdc++ libgcc mariadb-client postgresql-client sqlite mariadb-connector-c lua-dev curl-dev boost-program_options" \
+    BUILD_DEPS="g++ make curl curl-dev lua-dev boost-dev openssl-dev libsodium-dev mariadb-dev mariadb-connector-c-dev postgresql-dev sqlite-dev" \
+    RUN_DEPS="bash libstdc++ libgcc curl lua boost-program_options openssl libsodium mariadb-client mariadb-connector-c postgresql-client libpq sqlite sqlite-libs" \
     POWERDNS_MODULES="bind gmysql gpgsql gsqlite3"
 
 FROM base AS build
@@ -11,7 +11,7 @@ FROM base AS build
 RUN apk --update add $BUILD_DEPS $RUN_DEPS
 RUN curl -sSL https://downloads.powerdns.com/releases/pdns-$POWERDNS_VERSION.tar.bz2 | tar xj -C /tmp/
 WORKDIR /tmp/pdns-$POWERDNS_VERSION
-RUN ./configure --prefix="" --exec-prefix=/usr --sysconfdir=/etc/pdns --with-modules="$POWERDNS_MODULES"
+RUN ./configure --prefix="" --exec-prefix=/usr --sysconfdir=/etc/pdns --with-modules="$POWERDNS_MODULES" --with-libsodium
 RUN make
 RUN DESTDIR="/pdnsbuild" make install-strip
 RUN mkdir -p /pdnsbuild/etc/pdns/conf.d /pdnsbuild/etc/pdns/sql
